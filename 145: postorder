@@ -16,25 +16,60 @@
 class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
         
-        LinkedList<Integer> list=new LinkedList<Integer>();
-        Stack<TreeNode> stack=new Stack<TreeNode>();
-        TreeNode current=root;
+//         LinkedList<Integer> list=new LinkedList<Integer>();
+//         Stack<TreeNode> stack=new Stack<TreeNode>();
+//         TreeNode current=root;
        
-        while(current!=null || !stack.isEmpty()){
-            if(current!=null){
-            list.addFirst(current.val);
-            stack.add(current);
-            current=current.right;
+//         while(current!=null || !stack.isEmpty()){
+//             if(current!=null){
+//             list.addFirst(current.val);
+//             stack.add(current);
+//             current=current.right;
+//             }
+//            else
+//              {
+//              current=stack.pop();
+//                current=current.left;
+//              }
+            
+//         }
+        
+       
+//         return list;
+         LinkedList<Integer> list=new LinkedList<Integer>();
+        TreeNode current=root;
+        
+        while(current!=null){
+            if(current.right==null){
+                list.addFirst(current.val);
+                current=current.left;
             }
-           else
-             {
-             current=stack.pop();
-               current=current.left;
-             }
+            
+            TreeNode pre=null;
+            if(current!=null && current.right!=null){
+                 TreeNode node1=current.right;
+                while( node1.left!=null && node1.left!=current){
+                    node1=node1.left;
+                }
+                pre=node1;
+            }
+            
+            if(pre!=null){
+                if(pre.left==current){
+                    current=current.left;
+                    pre.left=null;
+                }
+                else{
+                    pre.left=current;
+                     list.addFirst(current.val);
+                    current=current.right;
+                }
+                
+            }
             
         }
         
-       
-        return list;
+        return list; 
+        
     }
 }
