@@ -1,0 +1,93 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    //List<Integer> list=new ArrayList<Integer>();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        
+        // if(null!=root){
+        //     inorderTraversal(root.left);
+        //         list.add(root.val);
+        //      inorderTraversal(root.right);
+        // }
+        // return list;
+        //---------------------------------------------
+//         List<Integer> list=new ArrayList<Integer>();
+//         Stack<TreeNode> stack=new Stack<TreeNode>();
+//         TreeNode node=root;
+        
+//         while(node!=null){
+//             stack.add(node);
+//             node=node.left;
+//         }
+        
+//         while(!stack.isEmpty() ){
+//             TreeNode temp=stack.pop();
+//             list.add(temp.val);
+//             if(temp.right!=null)
+//             {
+//                 TreeNode tempr=temp.right;
+//                 while(tempr!=null)
+//                 {
+//                     stack.add(tempr);
+//                     tempr=tempr.left;
+//                 }
+//             }
+//         }
+        
+//         return list;
+        List<Integer> list=new ArrayList<Integer>();
+        TreeNode current=root;
+        
+        while(current!=null){
+           if(current.left==null){
+               list.add(current.val);
+               current=current.right;
+           } 
+            
+            TreeNode pre=null;
+            if(current!=null && current.left!=null)
+            {
+             pre=getPredecessor(current);
+            }
+            
+            if(null !=pre)
+            {         
+            if(pre.right==current)
+                {
+                list.add(current.val);
+                current=current.right;
+                pre.right=null;
+                }
+            else{
+                pre.right=current;
+                current=current.left;
+                }
+            }
+            
+            
+        }
+       return list;
+    }
+    
+      TreeNode getPredecessor(TreeNode current){
+           if(current==null)return current;
+           TreeNode node=current.left;
+           while(node.right!=null && node.right !=current){
+               node=node.right;
+           }
+           return node;
+       }
+}
