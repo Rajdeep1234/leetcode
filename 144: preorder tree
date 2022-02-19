@@ -14,22 +14,57 @@
  * }
  */
 class Solution {
-    List<Integer> list=new ArrayList<Integer>();
+    //List<Integer> list=new ArrayList<Integer>();
     public List<Integer> preorderTraversal(TreeNode root) {
-        Stack<TreeNode> stack=new Stack<TreeNode>();
-        TreeNode node =root;
-        while(null != node || !stack.isEmpty()){
-           if (null!=node){
-                list.add(node.val);
-                stack.add(node);
-                node=node.left;
+//         Stack<TreeNode> stack=new Stack<TreeNode>();
+//         TreeNode node =root;
+//         while(null != node || !stack.isEmpty()){
+//            if (null!=node){
+//                 list.add(node.val);
+//                 stack.add(node);
+//                 node=node.left;
+//             }
+//             else{
+//             node=stack.pop();
+//             node =node.right;
+//             }
+//         }
+        
+//         return list;
+        List<Integer> list=new ArrayList<Integer>();
+        
+        TreeNode current =root;
+        
+        while(current!=null){
+            if(current.left==null){
+                list.add(current.val);
+                current=current.right;
+            }
+            
+            TreeNode pre=null;
+            if(current!=null){
+                if(current.left==null) pre=current;
+                else{
+                    TreeNode node1 =current.left;
+                    while(null!=node1.right && node1.right!=current){
+                        node1=node1.right;
+                    }
+                    pre=node1;
+                }
+            }
+            if(pre !=null && pre !=current){
+            if( pre.right!=current){
+                pre.right=current;
+                list.add(current.val);
+                current=current.left;
             }
             else{
-            node=stack.pop();
-            node =node.right;
+                pre.right=null;
+                current=current.right;
             }
+            }
+            
         }
-        
         return list;
     }
 }
