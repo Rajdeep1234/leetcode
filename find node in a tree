@@ -1,0 +1,46 @@
+/**
+ * Definition for binary tree
+ * class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) {
+ *      val = x;
+ *      left=null;
+ *      right=null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ArrayList<Integer> solve(TreeNode root, int node) {
+        ArrayList<Integer> list=new ArrayList<Integer>();
+        if(root==null) return list;
+       findNode(root, list, node);
+       Collections.reverse(list);
+            return list;
+    }
+
+   boolean  findNode(TreeNode node, List<Integer> list, int nodeval){
+       if(node==null) return false;
+       if(node.val==nodeval){
+            list.add(node.val);
+            return true;
+       }
+       if(node.left!=null) {
+         boolean flag=  findNode(node.left, list, nodeval); 
+         if(flag){
+              list.add(node.val) ;
+              return true;
+         }
+       }
+  
+        if(node.right!=null){
+          boolean flag= findNode(node.right, list, nodeval);
+           if(flag){
+                list.add(node.val); 
+                return true;
+           }
+       }
+       return false;
+   }
+}
