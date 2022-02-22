@@ -1,0 +1,103 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class NewTreeNode{
+    TreeNode node;
+    int hd;
+    int level;
+    NewTreeNode(TreeNode node,int hd,int level){
+        this.node=node;
+        this.hd=hd;
+        this.level=level;
+    }
+}
+class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        
+        Queue<NewTreeNode> queue=new LinkedList<NewTreeNode>();
+        Map<Integer, List<NewTreeNode>> map=new TreeMap<Integer,  List<NewTreeNode>>();
+        
+        List<List<Integer>> list=new ArrayList<List<Integer>>();
+        int level=0;
+        NewTreeNode node =new NewTreeNode(root,0,level);
+        
+        queue.offer(node);
+        while(!queue.isEmpty()){
+           
+            int n =queue.size();
+            level+=1;
+            for(int i=0; i<n;i++){
+                  NewTreeNode temp=queue.poll();
+                  
+                if(null!=map.get(temp.hd))
+                {
+                        List<NewTreeNode>  templist=map.get(temp.hd);
+                        NewTreeNode tempval= templist.get(templist.size()-1);
+                    if(tempval.level==temp.level){
+                         templist.add(temp);
+                        Collections.sort(templist, new Comparator<NewTreeNode>(){
+                         public int compare(NewTreeNode a, NewTreeNode b)
+                     {
+                        if(a.level==b.level) //when y is equal, sort it by value
+                           return a.node.val - b.node.val;
+                        return 0; //otherwise don't change the order as BFS ganrantees that top nodes are visited first
+                     }
+                       });
+                    }
+                    else{
+                        templist.add(temp);
+                        
+                    }
+                    map.put(temp.hd,templist);
+                   
+                }
+                else{
+                    List<NewTreeNode> templist1=new ArrayList<NewTreeNode>();
+                    templist1.add(temp);
+                    map.put(temp.hd,templist1);
+                }
+                int hd=temp.hd;
+                if(temp.node.left!=null)
+                {
+                    queue.offer(new NewTreeNode(temp.node.left,hd-1,level));
+                }
+                
+                if(temp.node.right!=null)
+                {
+                     queue.offer(new NewTreeNode(temp.node.right,hd+1,level));
+                }
+                
+            }
+            
+            
+        }
+                                 
+            for(Map.Entry<Integer,List<NewTreeNode>> entry:map.entrySet())
+            {
+               List<NewTreeNode> treenodelist= entry.getValue();
+                List<Integer> list2=new ArrayList<Integer>();
+                if(null!=treenodelist)
+                {
+                    for(NewTreeNode node2:treenodelist)
+                    {
+                        list2.add(node2.node.val);
+                    }
+                }
+               list.add(list2);
+            }
+         return list;
+    }
+                                
+}
